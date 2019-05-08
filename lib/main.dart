@@ -572,7 +572,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void init() async {
     //saved preferences
     pref = await SharedPreferences.getInstance();
-    showChooseTrackText = false;
     height = pref.getString('height') ?? "2048";
     width = pref.getString('width') ?? "1024";
     size = "${height}x${width}";
@@ -595,7 +594,13 @@ class _MyHomePageState extends State<MyHomePage> {
         .then((mediaInfo) => info = mediaInfo);
     image = File(currentSpectrumDirectory);
 
-    if (!(await image.exists())) image = null;
+    if (!(await image.exists())){
+      image = null;
+      showChooseTrackText = true;
+    }
+    else
+      showChooseTrackText = false;
+
     setPreviousState();
   }
 
