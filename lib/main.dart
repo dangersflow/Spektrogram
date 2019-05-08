@@ -664,7 +664,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
                     : Text(""),
                 showChooseTrackText == true
-                    ? Text("Select an audio track!", style: TextStyle(color: Colors.grey),):Text(""),
+                    ? Text("Select an audio track!", style: TextStyle(color: Colors.grey),):Container(margin: EdgeInsets.all(0),),
                 info != null && currentFilePath != ""
                     ? Text("Audio Information:"):Text(""),
                 info != null && currentFilePath != ""
@@ -677,7 +677,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   elevation: 5,
                 )
                     : Text(""),
-                Text(""),
+                progressIndicator
+                    ? Container(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "Loading...",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(15),
+                      ),
+                      CircularProgressIndicator()
+                    ],
+                  ),
+                  height: 250,
+                  width: 300,
+                )
+                    : Container(),
                 image != null && currentFilePath != ""
                     ? Text("Generated Spectrum:"):Text(""),
                 image != null && currentFilePath != ""
@@ -708,29 +725,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   elevation: 5,
                 )
                     : Container(),
-                progressIndicator
-                    ? Container(
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        "Loading...",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(15),
-                      ),
-                      CircularProgressIndicator()
-                    ],
-                  ),
-                  height: 250,
-                  width: 300,
-                )
-                    : Container()
               ],
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
             ),
-            height: 500,
+            height: 600,
             alignment: FractionalOffset.center,
           ),
         ),
