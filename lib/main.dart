@@ -652,8 +652,8 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Container(
             child: Column(
               children: <Widget>[
-                showChooseTrackText == true
-                    ? Text("Select an audio track!", style: TextStyle(color: Colors.grey),):Text(""),
+                info != null && currentFilePath != ""
+                    ? Text("File Location:"):Text(""),
                 info != null && currentFilePath != ""
                     ? Card(
                   child: ListTile(
@@ -663,6 +663,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   elevation: 5,
                 )
                     : Text(""),
+                showChooseTrackText == true
+                    ? Text("Select an audio track!", style: TextStyle(color: Colors.grey),):Text(""),
+                info != null && currentFilePath != ""
+                    ? Text("Audio Information:"):Text(""),
                 info != null && currentFilePath != ""
                     ? Card(
                   child: ListTile(
@@ -673,6 +677,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   elevation: 5,
                 )
                     : Text(""),
+                Text(""),
+                image != null && currentFilePath != ""
+                    ? Text("Generated Spectrum:"):Text(""),
                 image != null && currentFilePath != ""
                     ? Card(
                   child: Container(
@@ -720,7 +727,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
                     : Container()
               ],
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
             ),
             height: 500,
@@ -745,7 +752,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             currentFilePath = pref.getString('currentFilePath');
           });
-          _flutterFFmpeg.getMediaInformation("${path}").then((mediaInfo) {
+           _flutterFFmpeg.getMediaInformation("${path}").then((mediaInfo) {
             setState(() {
               info = mediaInfo;
             });
