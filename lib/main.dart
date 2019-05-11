@@ -13,10 +13,10 @@ import 'package:path_provider/path_provider.dart';
 ThemeData _buildTheme(Brightness brightness) {
   return brightness == Brightness.dark
       ? ThemeData.dark().copyWith(
-      textTheme: ThemeData.dark().textTheme.apply(fontFamily: "Quicksand"),
+      textTheme: ThemeData.dark().textTheme.apply(fontFamily: "Nunito"),
       backgroundColor: Colors.black)
       : ThemeData.light().copyWith(
-      textTheme: ThemeData.light().textTheme.apply(fontFamily: "Quicksand"),
+      textTheme: ThemeData.light().textTheme.apply(fontFamily: "Nunito"),
       backgroundColor: Colors.white);
 }
 void main() => runApp(MyApp());
@@ -55,14 +55,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return DynamicTheme(
-        defaultBrightness: Brightness.light,
-        data: (brightness) => _buildTheme(brightness),
-        themedWidgetBuilder: (context, theme) => MaterialApp(
-          title: 'Flutter Demo',
-          theme: theme,
-          home: MyHomePage(),
-        ));
+    return  MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        fontFamily: "Nunito",
+        primaryColor: Colors.black,
+        //canvasColor: Colors.black,
+        brightness: Brightness.dark,
+        //cardColor: Color(0xFF292929),
+        cardColor: Color(0xFF252525),
+      ),
+      home: MyHomePage(),
+    );
   }
 }
 
@@ -140,355 +144,399 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: ListView(
           children: <Widget>[
-            ListTile(
-              title: Text("Height"),
-              trailing: Container(
-                width: 150,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.numberWithOptions(
-                            decimal: false, signed: false),
-                        controller: _height,
-                        onChanged: (controller) {
-                          pref.setString('height', _height.text);
-                          height = pref.getString('height');
-                          print(height);
-                        },
-                        inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly
+            Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Height"),
+                    trailing: Container(
+                      width: 150,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: false, signed: false),
+                              controller: _height,
+                              onChanged: (controller) {
+                                pref.setString('height', _height.text);
+                                height = pref.getString('height');
+                                print(height);
+                              },
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter.digitsOnly
+                              ],
+                            ),
+                          )
                         ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("Width"),
-              trailing: Container(
-                width: 150,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.numberWithOptions(
-                            decimal: false, signed: false),
-                        controller: _width,
-                        onChanged: (controller) {
-                          pref.setString('width', _width.text);
-                          width = pref.getString('width');
-                          print(width);
-                        },
-                        inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("Channel Mode"),
-              trailing: Container(
-                width: 150,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: DropdownButton<String>(
-                        value: mode,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            pref.setString('mode', newValue);
-                            mode = pref.getString('mode');
-                          });
-                        },
-                        items: <String>['combined', 'separate']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("Color Scheme"),
-              trailing: Container(
-                width: 150,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: DropdownButton<String>(
-                        value: color,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            pref.setString('color', newValue);
-                            color = pref.getString('color');
-                            print(color);
-                          });
-                        },
-                        items: <String>[
-                          'channel',
-                          'intensity',
-                          'rainbow',
-                          'moreland',
-                          'nebulae',
-                          'fire',
-                          'fiery',
-                          'fruit',
-                          'cool',
-                          'magma',
-                          'green',
-                          'viridis',
-                          'plasma',
-                          'cividis',
-                          'terrain'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("Scale"),
-              trailing: Container(
-                width: 150,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: DropdownButton<String>(
-                        value: scale,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            pref.setString('scale', newValue);
-                            scale = pref.getString('scale');
-                          });
-                        },
-                        items: <String>[
-                          'lin',
-                          'sqrt',
-                          'cbrt',
-                          'log',
-                          '4thrt',
-                          '5thrt'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("Saturation"),
-              trailing: Container(
-                width: 250,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Slider(
-                        value: saturation.toDouble(),
-                        onChanged: (value) {
-                          setState(() {
-                            pref.setInt('saturation', value.floor().toInt());
-                            saturation = pref.getInt('saturation');
-                            print(saturation.toString());
-                          });
-                        },
-                        max: 10.0,
-                        min: -10.0,
                       ),
                     ),
-                    Text(saturation.toString())
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("Window Function"),
-              trailing: Container(
-                width: 150,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: DropdownButton<String>(
-                        value: win_func,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            pref.setString('win_func', newValue);
-                            win_func = pref.getString('win_func');
-                            print(win_func);
-                          });
-                        },
-                        items: <String>[
-                          'rect',
-                          'bartlett',
-                          'hann',
-                          'hanning',
-                          'hamming',
-                          'blackman',
-                          'welch',
-                          'flattop',
-                          'bharris',
-                          'bnuttall',
-                          'bhann',
-                          'sine',
-                          'nuttall',
-                          'lanczos',
-                          'gauss',
-                          'tukey',
-                          'dolph',
-                          'cauchy',
-                          'parzen',
-                          'poisson',
-                          'bohman'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("Orientation"),
-              trailing: Container(
-                width: 150,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: DropdownButton<String>(
-                        value: orientation,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            pref.setString('orientation', newValue);
-                            orientation = pref.getString('orientation');
-                            print(orientation);
-                          });
-                        },
-                        items: <String>['vertical', 'horizontal']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("Color Rotation"),
-              trailing: Container(
-                width: 250,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Slider(
-                        value: ((rotation * pow(10, 1)).round()) / pow(10, 1),
-                        onChanged: (value) {
-                          setState(() {
-                            pref.setDouble('rotation',
-                                ((value * pow(10, 1)).round()) / pow(10, 1));
-                            rotation = pref.getDouble('rotation');
-                            print(rotation.toString());
-                          });
-                        },
-                        max: 1.0,
-                        min: -1.0,
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Width"),
+                    trailing: Container(
+                      width: 150,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: false, signed: false),
+                              controller: _width,
+                              onChanged: (controller) {
+                                pref.setString('width', _width.text);
+                                width = pref.getString('width');
+                                print(width);
+                              },
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter.digitsOnly
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    Text(rotation.toString())
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                ),
+                  ),
+                ],
               ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             ),
-            ListTile(
-              title: Text("Start Frequency (Hz)"),
-              trailing: Container(
-                width: 150,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.numberWithOptions(
-                            decimal: false, signed: false),
-                        controller: _start,
-                        onChanged: (controller) {
-                          pref.setInt('start', int.parse(_start.text));
-                          start = pref.getInt('start');
-                          print(start);
-                        },
-                        inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly
+            Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Channel Mode"),
+                    trailing: Container(
+                      width: 150,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: DropdownButton<String>(
+                              value: mode,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  pref.setString('mode', newValue);
+                                  mode = pref.getString('mode');
+                                });
+                              },
+                              items: <String>['combined', 'separate']
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("Stop Frequency (Hz)"),
-              trailing: Container(
-                width: 150,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.numberWithOptions(
-                            decimal: false, signed: false),
-                        controller: _stop,
-                        onChanged: (controller) {
-                          pref.setInt('stop', int.parse(_stop.text));
-                          stop = pref.getInt('stop');
-                          print(stop);
-                        },
-                        inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly
+                    ),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Color Scheme"),
+                    trailing: Container(
+                      width: 150,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: DropdownButton<String>(
+                              value: color,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  pref.setString('color', newValue);
+                                  color = pref.getString('color');
+                                  print(color);
+                                });
+                              },
+                              items: <String>[
+                                'channel',
+                                'intensity',
+                                'rainbow',
+                                'moreland',
+                                'nebulae',
+                                'fire',
+                                'fiery',
+                                'fruit',
+                                'cool',
+                                'magma',
+                                'green',
+                                'viridis',
+                                'plasma',
+                                'cividis',
+                                'terrain'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  ],
+                    ),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Scale"),
+                    trailing: Container(
+                      width: 150,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: DropdownButton<String>(
+                              value: scale,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  pref.setString('scale', newValue);
+                                  scale = pref.getString('scale');
+                                });
+                              },
+                              items: <String>[
+                                'lin',
+                                'sqrt',
+                                'cbrt',
+                                'log',
+                                '4thrt',
+                                '5thrt'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            ),
+            Card(
+              child: ListTile(
+                title: Text("Saturation"),
+                trailing: Container(
+                  width: 250,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Slider(
+                          value: saturation.toDouble(),
+                          onChanged: (value) {
+                            setState(() {
+                              pref.setInt('saturation', value.floor().toInt());
+                              saturation = pref.getInt('saturation');
+                              print(saturation.toString());
+                            });
+                          },
+                          max: 10.0,
+                          min: -10.0,
+                          activeColor: Colors.grey,
+                        ),
+                      ),
+                      Text(saturation.toString())
+                    ],
+                  ),
                 ),
               ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             ),
-            ListTile(
-              title: Text("Legend"),
-              trailing: Switch(
-                  value: legend,
-                  onChanged: (value) {
-                    setState(() {
-                      pref.setBool('legend', value);
-                      legend = pref.getBool('legend');
-                    });
-                  }),
+            Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Window Function"),
+                    trailing: Container(
+                      width: 150,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: DropdownButton<String>(
+                              value: win_func,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  pref.setString('win_func', newValue);
+                                  win_func = pref.getString('win_func');
+                                  print(win_func);
+                                });
+                              },
+                              items: <String>[
+                                'rect',
+                                'bartlett',
+                                'hann',
+                                'hanning',
+                                'hamming',
+                                'blackman',
+                                'welch',
+                                'flattop',
+                                'bharris',
+                                'bnuttall',
+                                'bhann',
+                                'sine',
+                                'nuttall',
+                                'lanczos',
+                                'gauss',
+                                'tukey',
+                                'dolph',
+                                'cauchy',
+                                'parzen',
+                                'poisson',
+                                'bohman'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Orientation"),
+                    trailing: Container(
+                      width: 150,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: DropdownButton<String>(
+                              value: orientation,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  pref.setString('orientation', newValue);
+                                  orientation = pref.getString('orientation');
+                                  print(orientation);
+                                });
+                              },
+                              items: <String>['vertical', 'horizontal']
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             ),
-            ListTile(
+            Card(
+              child: ListTile(
+                title: Text("Color Rotation"),
+                trailing: Container(
+                  width: 250,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Slider(
+                          value: ((rotation * pow(10, 1)).round()) / pow(10, 1),
+                          onChanged: (value) {
+                            setState(() {
+                              pref.setDouble('rotation',
+                                  ((value * pow(10, 1)).round()) / pow(10, 1));
+                              rotation = pref.getDouble('rotation');
+                              print(rotation.toString());
+                            });
+                          },
+                          max: 1.0,
+                          min: -1.0,
+                          activeColor: Colors.grey,
+                        ),
+                      ),
+                      Text(rotation.toString())
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                ),
+              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            ),
+            Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Start Frequency (Hz)"),
+                    trailing: Container(
+                      width: 150,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: false, signed: false),
+                              controller: _start,
+                              onChanged: (controller) {
+                                pref.setInt('start', int.parse(_start.text));
+                                start = pref.getInt('start');
+                                print(start);
+                              },
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter.digitsOnly
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Stop Frequency (Hz)"),
+                    trailing: Container(
+                      width: 150,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: false, signed: false),
+                              controller: _stop,
+                              onChanged: (controller) {
+                                pref.setInt('stop', int.parse(_stop.text));
+                                stop = pref.getInt('stop');
+                                print(stop);
+                              },
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter.digitsOnly
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            ),
+            Card(
+              child: ListTile(
+                title: Text("Legend"),
+                trailing: Switch(
+                    value: legend,
+                    onChanged: (value) {
+                      setState(() {
+                        pref.setBool('legend', value);
+                        legend = pref.getBool('legend');
+                      });
+                    }),
+              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            ),
+            /*ListTile(
               title: Text("Dark Mode"),
               trailing: Switch(
                   value: darkMode,
@@ -500,7 +548,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       print(darkMode);
                     });
                   }),
-            ),
+            ),*/
             ListTile(
                 trailing: Container(
                   width: 150,
@@ -633,7 +681,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(
           "Spektrogram",
-          style: TextStyle(fontFamily: "Quicksand"),
+          style: TextStyle(fontFamily: "Nunito"),
         ),
         actions: <Widget>[
           IconButton(
@@ -653,30 +701,24 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               children: <Widget>[
                 info != null && currentFilePath != ""
-                    ? Text("File Location:"):Text(""),
-                info != null && currentFilePath != ""
                     ? Card(
-                  child: ListTile(
-                    title: Text("${info["path"]}"),
+                  child: Column(
+                    children: <Widget>[
+                      info != null && currentFilePath != ""
+                          ? Text("File Location:", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),):Text(""),
+                      info != null && currentFilePath != ""
+                          ? ListTile(
+                        title: Text("${info["path"]}"),
+                      )
+                          : Text(""),
+                    ],
                   ),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                  elevation: 5,
-                )
-                    : Text(""),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)
+                  ),
+                ):Container(),
                 showChooseTrackText == true
                     ? Text("Select an audio track!", style: TextStyle(color: Colors.grey),):Container(margin: EdgeInsets.all(0),),
-                info != null && currentFilePath != ""
-                    ? Text("Audio Information:"):Text(""),
-                info != null && currentFilePath != ""
-                    ? Card(
-                  child: ListTile(
-                    title: Text(
-                        "${info["streams"][0]["codec"]}, ${info["streams"][0]["sampleRate"]} Hz, ${info["streams"][0]["bitrate"]!=null ? info["streams"][0]["bitrate"]:info["bitrate"]} kbps, ${info["streams"][0]["sampleFormat"]}, ${info["streams"][0]["channelLayout"]}"),
-                  ),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                  elevation: 5,
-                )
-                    : Text(""),
                 progressIndicator
                     ? Container(
                   child: Column(
@@ -696,40 +738,62 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
                     : Container(),
                 image != null && currentFilePath != ""
-                    ? Text("Generated Spectrum:"):Text(""),
-                image != null && currentFilePath != ""
                     ? Card(
-                  child: Container(
-                    child: Hero(
-                        tag: 'dash',
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: FileImage(image),
-                                  fit: BoxFit.contain)),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ImageView(
-                                            image: image,
-                                          )));
-                            },
-                          ),
-                          height: 250,
-                        )),
+                  child: Column(
+                    children: <Widget>[
+                      image != null && currentFilePath != ""
+                          ? Text("Generated Spectrum:", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),):Text(""),
+                      image != null && currentFilePath != ""
+                          ? Container(
+                        child: Hero(
+                            tag: 'dash',
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: FileImage(image),
+                                      fit: BoxFit.contain)),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              ImageView(
+                                                image: image,
+                                              )));
+                                },
+                              ),
+                              height: 250,
+                            )),
+                      )
+                          : Container(),
+                    ],
                   ),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                  elevation: 5,
-                )
-                    : Container(),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)
+                  ),
+                ):Container(),
+                info != null && currentFilePath != ""
+                    ? Card(
+                  child: Column(
+                      children: <Widget>[
+                        info != null && currentFilePath != ""
+                            ? Text("Audio Information:", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),):Text(""),
+                        info != null && currentFilePath != ""
+                            ? ListTile(
+                          title: Text(
+                              "Codec: ${info["streams"][0]["codec"]}\n\nSample Rate: ${info["streams"][0]["sampleRate"]} Hz\n\nBitrate: ${info["streams"][0]["bitrate"]!=null ? info["streams"][0]["bitrate"]:info["bitrate"]} kbps\n\nSample Format: ${info["streams"][0]["sampleFormat"]}\n\nChannel Layout: ${info["streams"][0]["channelLayout"]}"),
+                        )
+                            : Text(""),
+                      ],
+                    ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                ):Container(),
               ],
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
             ),
-            height: 600,
             alignment: FractionalOffset.center,
           ),
         ),
