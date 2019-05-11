@@ -10,15 +10,6 @@ import 'package:photo_view/photo_view.dart';
 import 'package:faker/faker.dart';
 import 'package:path_provider/path_provider.dart';
 
-ThemeData _buildTheme(Brightness brightness) {
-  return brightness == Brightness.dark
-      ? ThemeData.dark().copyWith(
-      textTheme: ThemeData.dark().textTheme.apply(fontFamily: "Nunito"),
-      backgroundColor: Colors.black)
-      : ThemeData.light().copyWith(
-      textTheme: ThemeData.light().textTheme.apply(fontFamily: "Nunito"),
-      backgroundColor: Colors.white);
-}
 void main() => runApp(MyApp());
 
 //global variables
@@ -128,13 +119,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    void changeBrightness() {
-      DynamicTheme.of(context).setBrightness(
-          Theme.of(context).brightness == Brightness.dark
-              ? Brightness.light
-              : Brightness.dark);
-    }
-
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -536,19 +520,6 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             ),
-            /*ListTile(
-              title: Text("Dark Mode"),
-              trailing: Switch(
-                  value: darkMode,
-                  onChanged: (value) {
-                    setState(() {
-                      pref.setBool('darkMode', value);
-                      darkMode = pref.getBool('darkMode');
-                      changeBrightness();
-                      print(darkMode);
-                    });
-                  }),
-            ),*/
             ListTile(
                 trailing: Container(
                   width: 150,
@@ -559,7 +530,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         onPressed: () {
                           setState(() {
                             pref.clear();
-                            if (darkMode == true) changeBrightness();
                             height = "2048";
                             width = "1024";
                             _height = new TextEditingController(text: height);
@@ -580,7 +550,6 @@ class _SettingsPageState extends State<SettingsPage> {
                             gain = 1;
                             rotation = 0;
                             legend = true;
-                            darkMode = false;
                           });
                         },
                       ),
