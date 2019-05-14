@@ -748,6 +748,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: <Widget>[
                         info != null && currentFilePath != ""
                             ? Text("Audio Information:", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),):Text(""),
+                        Text(""),
                         info != null && currentFilePath != ""
                             ? ListTile(
                           title: Text(
